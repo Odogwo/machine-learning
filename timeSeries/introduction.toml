@@ -1,0 +1,59 @@
+[[time_series_analysis]]
+  definition = """Time series forecasting is a technique for predicting events through a
+  sequence of time, used in various fields such as geology, behavior, and economics. 
+  It analyzes past trends to predict future events."""
+
+  [time_series_analysis.applications]
+    weather_forecasting = true
+    earthquake_prediction = true
+    astronomy = true
+    statistics = true
+    mathematical_finance = true
+    econometrics = true
+    pattern_recognition = true
+    signal_processing = true
+    control_engineering = true
+
+  [time_series_analysis.technologies]
+    machine_learning = true
+    artificial_neural_networks = true
+    support_vector_machines = true
+    fuzzy_logic = true
+    gaussian_processes = true
+    hidden_markov_models = true
+
+  [time_series_analysis.goals]
+    identifying_phenomenon = "The nature of the phenomenon represented by the sequence of observations."
+    forecasting = "Predicting future values of the time series variable."
+
+  [time_series_analysis.stages]
+    visualizing = "Exploratory analysis to identify underlying patterns like trend and seasonality."
+    stationarizing = "Transforming the time series into a stationary state, ensuring constant statistical properties."
+    finding_parameters = "Determining optimal parameters for forecasting models based on ACF and PACF plots."
+    fitting_model = "Fitting an ARIMA model to learn the pattern of the series."
+    predictions = "Making predictions for future events."
+
+  [[time_series_analysis.steps]]
+    number = 1
+    name = "Visualizing time series"
+    description = "Identify underlying patterns like trend and seasonality through exploratory analysis."
+
+  [[time_series_analysis.steps]]
+    number = 2
+    name = "Stationarising time series"
+    description = "Transform the time series into a stationary state, ensuring constant statistical properties."
+
+  [[time_series_analysis.steps]]
+    number = 3
+    name = "Finding the best parameters for our model"
+    description = "Determine optimal parameters for forecasting models based on ACF and PACF plots."
+
+  [[time_series_analysis.steps]]
+    number = 4
+    name = "Fitting model"
+    description = "Fit an ARIMA model to learn the pattern of the series, ensuring data stationarity."
+
+  [[time_series_analysis.steps]]
+    number = 5
+    name = "Predictions"
+    description = "Make predictions for future events using the fitted model."
