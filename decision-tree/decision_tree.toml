@@ -5,3 +5,11 @@ A decision tree’s topmost node is called a root node. This node partitions the
 which is known as recursive partitioning. The resulting flow chart-like structure is an excellent tool for decision-making
 because it mimics human-level thinking. Decision trees are a method of solving specific problems
 through the use of nested if-else statements. These trees are visualized through nodes, which represent different decision point
+
+
+
+How the features are selected?
+Information gain is a measure used to determine which feature should be used to split the data at each internal node of the decision tree
+
+
+
