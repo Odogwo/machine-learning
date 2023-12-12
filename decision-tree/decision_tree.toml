@@ -1,4 +1,4 @@
-
+A decision tree is one of the most powerful algorithms of supervised learning algorithms used for solving regression and classification problem
 
 
 A decision tree’s topmost node is called a root node. This node partitions the tree recursively based on attribute values, 
