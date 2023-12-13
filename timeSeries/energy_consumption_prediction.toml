@@ -1,1 +1,681 @@
+[[problem_statement]]
+  description = """The dataset,  comprises two columns: Date and Consumption Percentage. 
+  It spans from 1985 to 2018, reflecting electricity consumption. 
+  The objective is to forecast electricity consumption for the upcoming 6 years, extending until 2024."""
+
+
+[[code_snippet]]
+  language = "python"
+  library = true
+  code = """
+  import warnings
+  warnings.filterwarnings('ignore')
+  import numpy as np
+  import pandas as pd
+  import matplotlib.pyplot as plt
+  plt.style.use('fivethirtyeight')  # Special style template for matplotlib, highly useful for visualizing time series data
+  from pylab import rcParams
+  rcParams['figure.figsize'] = 10, 7
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Load the dataset
+  df = pd.read_csv('../input/electric-production/Electric_Production.csv')
+  df
+  """
+
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Define column names, drop nulls, convert Date to DateTime format, and make Date the index column
+
+  # Description:
+  # - Define meaningful column names 'Date' and 'Consumption'
+  # - Drop any rows with missing values
+  # - Convert the 'Date' column to DateTime format for time-related operations
+  # - Set the 'Date' column as the index, essential for time series data visualization
+
+  df.columns = ['Date', 'Consumption']  # Assigning descriptive column names
+  df = df.dropna()  # Removing rows with missing values
+  df['Date'] = pd.to_datetime(df['Date'])  # Converting 'Date' column to DateTime format
+  df.set_index('Date', inplace=True)  # Setting 'Date' as the index column
+  df.head()  # Displaying the first few rows of the processed DataFrame
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Visualizing the time series
+  plt.xlabel("Date")
+  plt.ylabel("Consumption")
+  plt.title("Production Graph")
+  plt.plot(df)
+  # Note: The plot returns [<matplotlib.lines.Line2D at 0x7ff6c808ad10>]
+
+  # Description:
+  # - Setting the labels and title for the plot
+  # - Plotting the time series using the 'plot' function
+
+  # Scatterplot
+  df.plot(style='k.')
+  plt.show()
+
+  # Description:
+  # - Visualizing the time series using scatterplot
+  # - 'style='k.'' specifies black dots in the scatterplot
+  # - Displaying the scatterplot
+
+  # Distribution Plot
+  df.plot(kind='kde')
+  # Note: Returns <matplotlib.axes._subplots.AxesSubplot at 0x7ff6bf3bcfd0>
+
+  # Description:
+  # - Visualizing the data distribution using a Kernel Density Estimate (KDE) plot
+  # - Displaying the KDE plot
+
+  # Decomposing Seasonality and Trend
+  from statsmodels.tsa.seasonal import seasonal_decompose
+  result = seasonal_decompose(df, model='multiplicative')
+  result.plot()
+  plt.show()
+
+  # Description:
+  # - Decomposing, separating the time series into components (trend, seasonality, and residual)
+  # - Using seasonal decomposition with a multiplicative model
+  # - Displaying the decomposed components
+  """
+[[explanation]]
+  content = """
+  For time series forecasting, it is essential to work with a stationary series, which exhibits a constant mean, variance, and covariance over time. In the current series, there is a noticeable upward trend, indicating a non-constant mean.
+
+  Therefore, we have identified that our time series is not stationary. The next stage involves efforts to transform the series into a stationary state, which is a prerequisite for effective time series forecasting.
+  """
+
+[[explanation]]
+  content = """
+  For time series forecasting, a stationary series with a constant mean, variance, and covariance is crucial. In the visualizations above:
+
+  1. **Line Plot:**
+      - The line plot of the time series reveals an evident upward trend, indicating a non-constant mean.
+  
+  2. **Scatterplot:**
+      - The scatterplot provides an additional view of the time series, showcasing individual data points.
+  
+  3. **Distribution Plot (KDE):**
+      - The Kernel Density Estimate (KDE) plot illustrates the data distribution, showing a near-normal distribution (bell-curve) over consumption values.
+  
+  4. **Decomposition Plot:**
+      - Decomposing the time series into components (trend, seasonality, and residual) using seasonal decomposition with a multiplicative model.
+  
+  These visualizations help identify that the time series is not stationary due to the observed upward trend. The next stage involves transforming the series into a stationary state to facilitate effective time series forecasting.
+  """
+
+[[explanation]]
+  content = """
+  The observed near-normal distribution (bell-curve) over consumption values in the Kernel Density Estimate (KDE)
+  plot suggests that the data has a relatively symmetric distribution.
+
+  Additionally, a time series typically comprises three systematic components and one non-systematic component:
+
+  - **Level:** Represents the average value in the series.
+  - **Trend:** Signifies the increasing or decreasing pattern in the series.
+  - **Seasonality:** Reflects the repeating short-term cycle in the series.
+  - **Noise:** Represents the random variation in the series.
+
+  To conduct a comprehensive time series analysis, it is essential to separate seasonality and trend from the series. 
+  This separation aims to make the resultant series stationary, which is a prerequisite for effective time series forecasting.
+
+  The subsequent steps will involve techniques to isolate the trend and seasonality components from the time series data.
+  """
+
+[[explanation]]
+  content = """
+  In the context of time series analysis, the components are categorized as follows:
+
+  **Systematic Components:**
+  - **Level:** Represents the average value in the series, indicating a baseline around which the data fluctuates.
+  - **Trend:** Signifies the long-term increasing or decreasing pattern in the series. It captures the overall direction of the data over an extended period.
+
+  **Non-Systematic Components:**
+  - **Seasonality:** Reflects the repeating short-term cycle or pattern in the series. Seasonality typically occurs at regular intervals, such as daily, monthly, or yearly patterns.
+  - **Noise:** Represents the random variation or irregularity in the series. It includes unpredictable factors that contribute to short-term fluctuations but do not follow a discernible pattern.
+
+  In summary, the level and trend components are systematic as they exhibit structured patterns over time, while seasonality and noise are non-systematic due to their more irregular and less predictable nature.
+  """
+[[explanation]]
+  content = """
+  The decomposition of the time series provides valuable insights into our data and real-world actions. Notably:
+
+  - **Upward Trend:** There is a clear upward trend in the data, indicating a consistent increase in electricity consumption over time.
+  - **Recurring Event:** A recurring event is observed where electricity consumption reaches its maximum every year. This suggests a cyclic pattern or seasonality in the data, possibly influenced by factors like seasons or annual events.
+
+  These observations contribute to a deeper understanding of the underlying patterns in the time series, paving the way for more informed time series forecasting and decision-making.
+  """
+[[explanation]]
+  content = """
+  The process of stationarizing a time series involves checking and transforming it to ensure it meets the criteria of stationarity. A common test for stationarity is the Augmented Dickey-Fuller (ADF) test.
+
+  **ADF (Augmented Dickey-Fuller) Test:**
+  - The ADF test helps determine the presence of a unit root in the series, aiding in the assessment of stationarity.
+  - Null Hypothesis: The series has a unit root (value of alpha = 1).
+  - Alternate Hypothesis: The series has no unit root.
+
+  If we fail to reject the null hypothesis, it indicates that the series is non-stationary. This implies that the series can be linear or difference stationary (to be discussed in the next section). Stationarity is confirmed if both mean and standard deviation are flat lines (constant mean and constant variance).
+
+  The subsequent function aids in visualizing a series along with its rolling mean and standard deviation, facilitating the assessment of stationarity.
+  """
+
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  from statsmodels.tsa.stattools import adfuller
+
+  def test_stationarity(timeseries):
+      # Determining rolling statistics
+      rolmean = timeseries.rolling(12).mean()
+      rolstd = timeseries.rolling(12).std()
+      # Plotting rolling statistics
+      plt.plot(timeseries, color='blue', label='Original')
+      plt.plot(rolmean, color='red', label='Rolling Mean')
+      plt.plot(rolstd, color='black', label='Rolling Std')
+      plt.legend(loc='best')
+      plt.title('Rolling Mean and Standard Deviation')
+      plt.show(block=False)
+
+      # Performing Dickey-Fuller test
+      print("Results of Dickey-Fuller Test:")
+      adft = adfuller(timeseries['Consumption'], autolag='AIC')
+      # Output for adft will provide values without defining what they represent
+      # Hence, manually interpreting and displaying the results using a for loop
+      output = pd.Series(adft[0:4], index=['Test Statistics', 'p-value', 'No. of Lags Used', 'Number of Observations Used'])
+      for key, value in adft[4].items():
+          output['Critical Value (%s)' % key] = value
+      print(output)
+
+  test_stationarity(df)
+  """
+[[explanation]]
+  content = """
+  The provided Python code defines a function named `test_stationarity` to assess the stationarity of a time series using the Augmented Dickey-Fuller (ADF) test. Here's an explanation of the code:
+
+  1. **Rolling Statistics Visualization:**
+      - The function calculates and plots rolling mean and standard deviation for the given time series.
+      - `rolmean`: Rolling mean with a window size of 12.
+      - `rolstd`: Rolling standard deviation with a window size of 12.
+      - Original time series, rolling mean, and rolling standard deviation are plotted using matplotlib.
+      - This visualization aids in identifying trends and variations in the time series.
+
+  2. **Augmented Dickey-Fuller (ADF) Test:**
+      - The function performs the ADF test using `adfuller` from `statsmodels.tsa.stattools`.
+      - The test checks for the presence of a unit root in the time series.
+      - Null Hypothesis: The series has a unit root (non-stationary).
+      - Alternate Hypothesis: The series has no unit root (stationary).
+      - The results of the test, including the test statistics, p-value, number of lags used, and critical values, are displayed.
+
+  3. **Output Interpretation:**
+      - The results of the ADF test are printed in a readable format, including test statistics, p-value, number of lags used, and critical values.
+      - The critical values help determine the significance of the test results.
+
+  This function provides a comprehensive view of the stationarity of the time series through visualizations and statistical tests.
+  """
+
+[[explanation]]
+  content = """
+  The analysis of the provided graph indicates an increasing mean and standard deviation, suggesting that the time series is not stationary.
+
+  Observations:
+  - The p-value is greater than 0.05, indicating that we cannot reject the null hypothesis of the ADF test.
+  - The test statistics are greater than the critical values, further confirming that the data is non-stationary.
+
+  To achieve a stationary series, the trend and seasonality need to be removed. The proposed approach involves the following steps:
+
+  1. **Log Transformation:**
+      - Taking the logarithm of the series helps reduce the magnitude of values and mitigate the rising trend in the series.
+
+  2. **Rolling Average:**
+      - After obtaining the log of the series, a rolling average is calculated.
+      - The rolling average is computed by considering the past 12 months, providing a mean consumption value at each point in the series.
+
+  This process aims to eliminate the trend and seasonality, leading to a more stationary time series for improved forecasting.
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  df_log = np.log(df)
+  moving_avg = df_log.rolling(12).mean()
+  std_dev = df_log.rolling(12).std()
+  plt.plot(df_log)
+  plt.plot(moving_avg, color="red")
+  plt.plot(std_dev, color="black")
+  plt.show()
+  """
+
+[[explanation]]
+  content = """
+  The provided Python code performs the following operations to transform the time series and visualize the results:
+
+  1. **Log Transformation:**
+      - `df_log = np.log(df)`: Calculates the natural logarithm of the original time series (`df`) and stores it in `df_log`.
+      - Logarithmic transformation helps reduce the magnitude of values and address the rising trend in the series.
+
+  2. **Rolling Average and Standard Deviation:**
+      - `moving_avg = df_log.rolling(12).mean()`: Computes the rolling mean with a window size of 12 for the log-transformed series.
+      - `std_dev = df_log.rolling(12).std()`: Calculates the rolling standard deviation with a window size of 12 for the log-transformed series.
+
+  3. **Plotting:**
+      - The code then plots the log-transformed series (`df_log`), the rolling mean (`moving_avg`) in red, and the rolling standard deviation (`std_dev`) in black.
+      - Visualization of the log-transformed series along with the rolling mean and standard deviation provides insights into the trend and variability.
+
+  The plotted graph allows us to observe the impact of the log transformation and the rolling statistics on the time series, aiding in the quest for stationarity.
+  """
+
+[[explanation]]
+  content = """
+  Following the calculation of the rolling mean, the code proceeds to eliminate trends from the series by taking the difference between the series and the mean at each point. This process involves differencing the series, resulting in a more stationary time series. The aim is to create a dataset with reduced trend and seasonality components, enhancing the suitability of the data for time series forecasting.
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  df_log_moving_avg_diff = df_log - moving_avg
+  df_log_moving_avg_diff.dropna(inplace=True)
+  """
+
+[[explanation]]
+  content = """
+  The provided Python code performs the following operations:
+
+  1. **Differencing:**
+      - `df_log_moving_avg_diff = df_log - moving_avg`: Computes the difference between the log-transformed series (`df_log`) and the rolling mean (`moving_avg`) 
+      at each point. This differencing step aims to eliminate trends from the series.
+  
+  2. **Drop NaN Values:**
+      - `df_log_moving_avg_diff.dropna(inplace=True)`: Removes any NaN (Not a Number) values resulting from the differencing process. 
+      This step ensures a clean and complete dataset for further analysis.
+
+  The resulting `df_log_moving_avg_diff` represents the differenced series, which is now more stationary compared to the original time series.
+  """
+
+[[explanation]]
+  content = """
+  The user has requested to perform the Dickey-Fuller test (ADFT) once again
+  to check the stationarity of the differenced time series. 
+  This test is crucial for assessing whether the data has become stationary after the applied transformations. 
+  The provided Python code defines a function named `test_stationarity` that visualizes rolling statistics and
+  conducts the Dickey-Fuller test. 
+  The function is then applied to the differenced series (`df_log_moving_avg_diff`). 
+  Executing the Dickey-Fuller test at various stages is a standard practice to monitor the progress in
+  achieving stationarity and ensuring the data's suitability for time series analysis.
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  def test_stationarity(timeseries):
+      # Determining rolling statistics
+      rolmean = timeseries.rolling(12).mean()
+      rolstd = timeseries.rolling(12).std()
+      # Plotting rolling statistics
+      plt.plot(timeseries, color='blue', label='Original')
+      plt.plot(rolmean, color='red', label='Rolling Mean')
+      plt.plot(rolstd, color='black', label='Rolling Std')
+      plt.legend(loc='best')
+      plt.title('Rolling Mean and Standard Deviation')
+      plt.show(block=False)
+
+      # Performing Dickey-Fuller test
+      print("Results of Dickey-Fuller Test:")
+      adft = adfuller(timeseries['Consumption'], autolag='AIC')
+      # Output for adft will provide values without defining what they represent
+      # Hence, manually interpreting and displaying the results using a for loop
+      output = pd.Series(adft[0:4], index=['Test Statistics', 'p-value', 'No. of Lags Used', 'Number of Observations Used'])
+      for key, value in adft[4].items():
+          output['Critical Value (%s)' % key] = value
+      print(output)
+
+  # Applying the Dickey-Fuller test to the differenced series
+  test_stationarity(df_log_moving_avg_diff)
+  """
+[[explanation]]
+  content = """
+  The analysis of the graph indicates that the applied transformations have successfully rendered the data stationary. 
+  The completion of this module signifies progress in preparing the time series data for further analysis.
+
+  The user now intends to explore the weighted average to understand the trend in the time series. 
+  Specifically, the instruction is to take the previous log-transformed data and perform the relevant operations, 
+  which will be addressed in the subsequent steps of the analysis.
+  """
+[[explanation]]
+  content = """
+  The exponential moving average (EMA) is a type of weighted average that assigns exponentially 
+  decreasing weights to past prices or periods. In this calculation, recent prices carry more weight 
+  compared to older prices. The formula for EMA emphasizes the significance of more recent observations,
+  making it responsive to recent changes in the time series. This concept will be applied to the previous
+  log-transformed data to analyze the trend in the time series.
+  """
+
+
+  [[code_snippet]]
+  language = "python"
+  code = """
+  plt.plot(df_log)
+  plt.plot(weighted_average, color='red')
+  plt.xlabel("Date")
+  plt.ylabel("Consumption")
+  from pylab import rcParams
+  rcParams['figure.figsize'] = 10, 6
+  plt.legend()
+  plt.show(block=False)
+  """
+[[explanation]]
+  content = """
+  The provided Python code generates a plot to visualize the original log-transformed time series (`df_log`) alongside the exponential moving average (EMA) calculated for the same data (`weighted_average`).
+
+  - `plt.plot(df_log)`: Plots the original log-transformed series in blue.
+  - `plt.plot(weighted_average, color='red')`: Overlays the plot with the EMA in red.
+  - `plt.xlabel("Date")`: Sets the x-axis label as "Date."
+  - `plt.ylabel("Consumption")`: Sets the y-axis label as "Consumption."
+  - `from pylab import rcParams`: Imports the rcParams module from pylab to customize figure size.
+  - `rcParams['figure.figsize'] = 10, 6`: Sets the figure size to 10x6 inches.
+  - `plt.legend()`: Adds a legend to the plot.
+  - `plt.show(block=False)`: Displays the plot.
+
+  The visualization allows for a qualitative assessment of how the EMA tracks the trend in the time series, providing insights into the underlying patterns and variations.
+  """
+[[explanation]]
+  content = """
+  The instruction involves subtracting the original log-transformed series (`df_log`) 
+  with the exponential moving average (`weighted_average`). 
+  This subtraction results in a new differenced series (`df_log_weighted_avg_diff`). 
+  Subsequently, the Dickey-Fuller test (ADFT) is performed on this differenced series to assess its stationarity. 
+  Executing the Dickey-Fuller test after the subtraction helps evaluate the impact of the weighted average on achieving stationarity in the time series data.
+
+  # Subtracting df_log with weighted_average
+  df_log_weighted_avg_diff = df_log - weighted_average
+  df_log_weighted_avg_diff.dropna(inplace=True)
+
+  # Performing the Dickey-Fuller test on the differenced series
+  test_stationarity(df_log_weighted_avg_diff)
+  """
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Subtracting df_log with weighted_average
+  logScale_weightedMean = df_log - weighted_average
+
+  # Setting figure size
+  from pylab import rcParams
+  rcParams['figure.figsize'] = 10, 6
+
+  # Performing the Dickey-Fuller test on the differenced series
+  test_stationarity(logScale_weightedMean)
+  """
+[[explanation]]
+  content = """
+  The analysis of the graph indicates that the data has achieved stationarity after the applied transformations.
+  The user emphasizes the importance of considering high seasonality in the data. 
+  In such cases, merely removing the trend may not suffice, and addressing seasonality becomes crucial.
+  Differencing is introduced as a method to handle seasonality and stabilize the mean of the time series.
+
+  Differencing involves subtracting the previous observation from the current observation, effectively removing temporal dependencies, trends, and seasonality.
+
+  The user requests to perform the Dickey-Fuller test (ADFT) once again after applying differencing to assess the stationarity of the time series data.
+  """
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Creating a differenced series by subtracting the previous observation from the current observation
+  df_log_diff = df_log - df_log.shift()
+
+  # Plotting the shifted time series
+  plt.title("Shifted timeseries")
+  plt.xlabel("Date")
+  plt.ylabel("Consumption")
+  plt.plot(df_log_diff)
+
+  # Testing the stationarity of the differenced series
+  df_log_diff.dropna(inplace=True)
+  test_stationarity(df_log_diff)
+  """
+
+[[explanation]]
+  content = """
+  The provided Python code performs the following operations:
+
+  1. **Creating Differenced Series:**
+      - `df_log_diff = df_log - df_log.shift()`: Creates a differenced series by subtracting the previous observation from the current observation. 
+      This process helps remove temporal dependencies and can eliminate trends and seasonality.
+
+  2. **Plotting Shifted Time Series:**
+      - `plt.title("Shifted timeseries")`: Sets the title of the plot as "Shifted timeseries."
+      - `plt.xlabel("Date")`: Sets the x-axis label as "Date."
+      - `plt.ylabel("Consumption")`: Sets the y-axis label as "Consumption."
+      - `plt.plot(df_log_diff)`: Plots the differenced series, showing the impact of differencing on the time series.
+
+  3. **Testing Stationarity:**
+      - `df_log_diff.dropna(inplace=True)`: Removes any NaN values resulting from differencing.
+      - `test_stationarity(df_log_diff)`: Performs the Dickey-Fuller test (ADFT) on the differenced series to assess its stationarity.
+
+  The visual representation and the Dickey-Fuller test results provide insights into the effectiveness
+  of differencing in achieving stationarity in the time series data.
+  """
+
+  [[explanation]]
+  content = """
+  The user introduces the next step in the analysis, which involves performing decomposition. 
+  Decomposition provides a structured approach to understanding and modeling time series forecasting problems. 
+  It breaks down a time series into key components, including trend, seasonality, and residual (noise). 
+  Decomposition aids in developing a comprehensive understanding of the underlying patterns and variations within the time series, 
+  facilitating the selection of appropriate models and capturing each component effectively.
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  !pip install chart_studio
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  from chart_studio.plotly import plot_mpl
+  from statsmodels.tsa.seasonal import seasonal_decompose
+
+  # Performing seasonal decomposition with an additive model
+  result = seasonal_decompose(df_log, model='additive', freq=12)
+
+  # Plotting the decomposed components
+  result.plot()
+  plt.show()
+  """
+
+[[explanation]]
+  content = """
+  The provided Python code utilizes the `seasonal_decompose` function from the `statsmodels.tsa.seasonal` 
+  module to perform seasonal decomposition with an additive model on the log-transformed time series (`df_log`).
+  The decomposition aims to break down the time series into its key components, including trend, seasonality, and residual.
+
+  - `result = seasonal_decompose(df_log, model='additive', freq=12)`: Applies seasonal decomposition using an additive 
+  model with a frequency of 12 (indicating monthly seasonality).
+
+  - `result.plot()`: Plots the decomposed components, including the observed time series, trend, seasonality, and residual.
+
+  The visualization provides insights into the individual components of the time series, helping to understand the underlying patterns and variations.
+  """
+
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  def test_stationarity_final(timeseries):
+      # Determining rolling statistics
+      rolmean = timeseries.rolling(12).mean()
+      rolstd = timeseries.rolling(12).std()
+      # Plotting rolling statistics:
+      plt.plot(timeseries, color='blue', label='Original')
+      plt.plot(rolmean, color='red', label='Rolling Mean')
+      plt.plot(rolstd, color='black', label='Rolling Std')
+      plt.legend(loc='best')
+      plt.title('Rolling Mean and Standard Deviation')
+      plt.show(block=False)
+
+  # Extracting trend, seasonality, and residual components from the decomposition result
+  trend = result.trend
+  trend.dropna(inplace=True)
+  seasonality = result.seasonal
+  seasonality.dropna(inplace=True)
+  residual = result.resid
+  residual.dropna(inplace=True)
+
+  # Performing the Dickey-Fuller test on the residual component
+  test_stationarity_final(residual)
+  """
+
+[[explanation]]
+  content = """
+  The user provides an observation after the decomposition, noting that the residual component 
+  exhibits a flat line for both mean and standard deviation. This observation indicates that the
+  residual series has achieved stationarity. The user now expresses readiness to proceed to the next step, 
+  which involves finding the best parameters for the time series forecasting model.
+  """
+
+[[explanation]]
+  content = """
+  The user introduces the next step in the analysis, focusing on finding the best parameters for 
+  the time series forecasting model. Before building the model, it is essential to determine the 
+  optimal parameters for a nonseasonal ARIMA model, denoted as "ARIMA(p,d,q)." The parameters include:
+  - p: Number of autoregressive terms
+  - d: Number of nonseasonal differences needed for stationarity
+  - q: Number of lagged forecast errors in the prediction equation
+
+  The user emphasizes the use of ACF (Autocorrelation Function) and PACF (Partial Autocorrelation Function) 
+  plots to identify suitable values for p and q. These plots play a crucial role in understanding 
+  the autocorrelation structure of the time series, aiding in the selection of optimal parameters for the ARIMA model.
+  """
+
+  [[explanation]]
+  content = """
+  The user provides an explanation of Autocorrelation Function (ACF).
+  ACF measures the statistical correlation between a time series and its previous time steps,
+  known as lags. The correlation values are calculated for different lags, and
+  the resulting plot is referred to as the AutoCorrelation Function (ACF).
+  This plot, also known as a correlogram or autocorrelation plot, visually represents the 
+  strength and nature of the relationship between a time series and its past observations.
+  A positive or negative correlation is indicated by values closer to 1 or -1, respectively, while a value of 0 implies no correlation.
+  """
+
+[[explanation]]
+  content = """
+  The user provides an explanation of Partial Autocorrelation Function (PACF). 
+  PACF summarizes the relationship between an observation in a time series and
+  observations at prior time steps, with the effects of intervening observations removed. 
+  Specifically, the partial autocorrelation at lag k represents the correlation after eliminating the influence of correlations from shorter lags. 
+
+  In contrast to the autocorrelation function (ACF), which includes both direct and indirect correlations,
+  the PACF focuses on isolating and quantifying the direct correlation at a specific lag. This function helps
+  in understanding the direct impact of past observations on the current observation, providing insights into the underlying structure of the time series.
+  """
+
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  from statsmodels.tsa.stattools import acf, pacf
+
+  # Calculate autocorrelation (ACF) and partial autocorrelation (PACF)
+  acf_values = acf(df_log_diff, nlags=15)
+  pacf_values = pacf(df_log_diff, nlags=15, method='ols')
+
+  # Plotting ACF
+  plt.subplot(121)
+  plt.plot(acf_values) 
+  plt.axhline(y=0, linestyle='-', color='blue')
+  plt.axhline(y=-1.96/np.sqrt(len(df_log_diff)), linestyle='--', color='black')
+  plt.axhline(y=1.96/np.sqrt(len(df_log_diff)), linestyle='--', color='black')
+  plt.title('Auto Correlation Function')
+  plt.tight_layout()
+
+  # Plotting PACF
+  plt.subplot(122)
+  plt.plot(pacf_values) 
+  plt.axhline(y=0, linestyle='-', color='blue')
+  plt.axhline(y=-1.96/np.sqrt(len(df_log_diff)), linestyle='--', color='black')
+  plt.axhline(y=1.96/np.sqrt(len(df_log_diff)), linestyle='--', color='black')
+  plt.title('Partial Auto Correlation Function')
+  plt.tight_layout()
+  """
+
+
+[[explanation]]
+  content = """
+  The user discusses the process of fitting the time series forecasting model. 
+  To determine the values of p and q for the ARIMA model, the user suggests examining 
+  the ACF and PACF plots. The user recommends identifying the point where the graphs cut 
+  off the origin or drop to zero for the first time. In this case, the user notes that the
+  values of p and q are close to 3 where the graph cuts off the origin.
+
+  With the identified values for p, d, and q, the user suggests substituting them into the 
+  ARIMA model for further analysis and obtaining the model's output.
+  """
+
+[[code_snippet]]
+  language = "python"
+  code = """
+  from statsmodels.tsa.arima_model import ARIMA
+
+  # Create and fit ARIMA model with identified parameters (p=3, d=1, q=3)
+  model = ARIMA(df_log, order=(3, 1, 3))
+  result_AR = model.fit(disp=0)
+
+  # Plotting the original time series and the fitted values
+  plt.plot(df_log_diff)
+  plt.plot(result_AR.fittedvalues, color='red')
+  plt.title("Sum of Squares of Residuals")
+
+  # Printing the Residual Sum of Squares (RSS)
+  print('RSS: %f' % sum((result_AR.fittedvalues - df_log_diff["Consumption"])**2))
+  """
+
+[[explanation]]
+  content = """
+  The user provides an insight into evaluating the effectiveness of the ARIMA 
+  model by comparing the Residual Sum of Squares (RSS) values. The lower the RSS value, 
+  the more effective the model is considered. The user advises trying different combinations of parameters, 
+  such as (2,1,0), (3,1,1), etc., and selecting the model with the smallest RSS value for better performance.
+  """
+[[code_snippet]]
+  language = "python"
+  code = """
+  # Plotting the forecasted values
+  result_AR.plot_predict(1, 500)
+  
+  # Forecasting the next 300 steps
+  x = result_AR.forecast(steps=300)
+  """
+[[explanation]]
+  content = """
+  The user describes the interpretation of the forecasted values plotted in the graph. 
+  The greyed-out area represents the confidence interval, indicating that the predictions
+  are expected to fall within that range. This interval provides a measure of uncertainty 
+  around the forecasted values. The user highlights that the predictions extend until the year 2024.
+  """
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
 
