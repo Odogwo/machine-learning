@@ -1,1 +1,473 @@
+[[content]]
+  title = "Electricity Production Forecasting - Overview"
+
+[[content]]
+  title = "1. Libraries and Utilities: Introduction and setup of necessary libraries."
+
+[[content]]
+  title = "2. Loading Data: Importing and preparing the dataset."
+
+[[content]]
+  title = "3. Data Exploration: Analyzing data through rolling statistics, checking stationarity, and statistical tests."
+
+[[content]]
+  title = "4. Data Transformation: Applying logarithmic transformation, box-cox transformation, and removing trend."
+
+[[content]]
+  title = "5. Decomposition: Breaking down the time series into trend, seasonality, and residual components."
+
+[[content]]
+  title = "6. Autocorrelation Analysis: Understanding autocorrelation and partial autocorrelation functions."
+
+[[content]]
+  title = "7. Forecasting Models: Building and evaluating models including Persistence, Autoregression, Moving Average, and ARIMA."
+
+[[content]]
+  title = "8. Model Comparison: Analyzing mean squared errors for model evaluation."
+
+[[content]]
+  title = "Electricity Production Forecasting - Overview"
+
+[[content]]
+  title = "1. Libraries and Utilities: Introduction and setup of necessary libraries."
+
+[[content]]
+  title = "2. Loading Data: Importing and preparing the dataset."
+
+[[content]]
+  title = "3. Data Exploration: Analyzing data through rolling statistics, checking stationarity, and statistical tests."
+
+
+[[content]]
+  title = "4. Statistical Analysis of Stationarity"
+  [[content]]
+    title = "4.1 Checking Stationarity: Visualizing data trends."
+    [[content]]
+      title = "4.1.1 Rolling Statistics: Analyzing mean and standard deviation."
+
+  [[content]]
+    title = "4.2 Statistical Tests for Stationarity"
+    [[content]]
+      title = "4.2.1 Mean of Data: Calculating the mean of the dataset."
+      title = "4.2.2 Variance of Data: Calculating the variance of the dataset."
+      title = "4.2.3 Augmented Dickey-Fuller Test: Evaluating stationarity using a statistical test."
+
+  [[content]]
+    title = "4.3 Data Transformation Techniques"
+    [[content]]
+      title = "4.3.1 Converting Data to Stationary: Transforming data for stationarity."
+      title = "4.3.2 Logarithmic Transformation with Box-Cox: Applying logarithmic transformation."
+      title = "4.3.3 Removing Trend with Moving Average: Detrending the time series."
+      title = "4.3.4 Exponential Decay Transformation: Applying exponential decay."
+
+[[content]]
+  title = "6. Time Series Decomposition"
+  [[content]]
+    title = "6.1 Decomposition Techniques"
+    [[content]]
+      title = "6.1.1 Decomposition Overview: Understanding time series components."
+      title = "6.1.2 Decomposition Plot: Visualizing decomposed time series components."
+
+[[content]]
+  title = "7. Autocorrelation and Partial Autocorrelation"
+  [[content]]
+    title = "7.1 Understanding Autocorrelation"
+    [[content]]
+      title = "7.1.1 Autocorrelation Function (ACF): Analyzing autocorrelation in time series."
+    title = "7.2 Understanding Partial Autocorrelation"
+    [[content]]
+      title = "7.2.1 Partial Autocorrelation Function (PACF): Investigating partial autocorrelation."
+
+[[content]]
+  title = "8. Time Series Forecasting Models"
+  [[content]]
+    title = "8.1 Persistence Model"
+    [[content]]
+      title = "8.1.1 Model Overview: Simple baseline model."
+      title = "8.1.2 Implementation: Building and evaluating the Persistence Model."
+    title = "8.2 Autoregression Model"
+    [[content]]
+      title = "8.2.1 Model Overview: Using lagged variables for prediction."
+      title = "8.2.2 Implementation: Building and evaluating the Autoregression Model."
+    title = "8.3 Moving Average Model"
+    [[content]]
+      title = "8.3.1 Model Overview: Utilizing moving averages in prediction."
+      title = "8.3.2 Implementation: Building and evaluating the Moving Average Model."
+    title = "8.4 ARIMA Model"
+    [[content]]
+      title = "8.4.1 Model Overview: Understanding the AutoRegressive Integrated Moving Average Model."
+      title = "8.4.2 Implementation: Building and evaluating the ARIMA Model."
+    title = "8.5 Mean Squared Errors"
+    [[content]]
+      title = "8.5.1 Evaluation Metric: Understanding the Mean Squared Error."
+      title = "8.5.2 Model Comparison: Analyzing and comparing model performance."
+
+[[content]]
+  title = "1. Libraries and Utilities"
+  description = "Importing necessary libraries and utilities for time series forecasting."
+
+[[content]]
+  title = "1.1 Importing Pandas"
+  description = "Importing the Pandas library for data manipulation and analysis."
+
+[[content]]
+  title = "1.2 Autocorrelation Plotting"
+  description = "Importing autocorrelation plotting from Pandas for visualizing time series autocorrelation."
+
+[[content]]
+  title = "1.3 Dataframe Manipulation"
+  description = "Importing DataFrame and concat functions from Pandas for handling time series data."
+
+[[content]]
+  title = "1.4 Numerical Computation"
+  description = "Importing NumPy for numerical computations in time series analysis."
+
+[[content]]
+  title = "1.5 Metric Calculation"
+  description = "Importing Mean Squared Error (MSE) from Scikit-Learn for model evaluation."
+
+[[content]]
+  title = "1.6 Seasonal Decomposition"
+  description = "Importing seasonal decomposition from statsmodels for analyzing seasonal components in time series data."
+
+[[content]]
+  title = "1.7 Stationarity Tests"
+  description = "Importing Augmented Dickey-Fuller test and other stationarity-related functions from statsmodels."
+
+[[content]]
+  title = "1.8 Box-Cox Transformation"
+  description = "Importing the Box-Cox transformation from SciPy for stabilizing variance in time series data."
+
+[[content]]
+  title = "1.9 Visualization Tools"
+  description = "Importing libraries for data visualization, including Matplotlib and Seaborn."
+
+[[content]]
+  title = "1.10 Warning Control"
+  description = "Importing the warnings module for managing warnings during execution."
+
+[[content]]
+  title = "1.11 Kaggle File Handling"
+  description = "Importing file handling utilities for Kaggle platform."
+
+[[content]]
+  title = "1.12 Initial Exploration"
+  description = "Initial exploration of the Kaggle input directory."
+
+# requirements.txt
+pandas==1.3.3
+numpy==1.21.2
+scikit-learn==0.24.2
+statsmodels==0.12.2
+scipy==1.7.1
+seaborn==0.11.2
+matplotlib==3.4.3
+
+
+# pyproject.toml
+
+[tool.poetry]
+name = "your_project_name"
+version = "0.1.0"
+description = "Your project description"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.3.3"
+numpy = "^1.21.2"
+scikit-learn = "^0.24.2"
+statsmodels = "^0.12.2"
+scipy = "^1.7.1"
+seaborn = "^0.11.2"
+matplotlib = "^3.4.3"
+
+[[tool.poetry.extras]]
+name = "libraries"
+code = """
+# Add your Libraries and Utilities code snippet here
+import pandas as pd
+from pandas.plotting import autocorrelation_plot
+from pandas import DataFrame
+from pandas import concat
+import numpy as np
+from math import sqrt
+
+from sklearn.metrics import mean_squared_error
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.stattools import acf
+from statsmodels.tsa.stattools import pacf
+from statsmodels.tsa.arima_model import ARIMA
+from scipy.stats import boxcox
+
+import seaborn as sns
+sns.set_style("whitegrid")
+import matplotlib.pyplot as plt
+from matplotlib.pylab import rcParams
+from matplotlib import colors
+%matplotlib inline
+
+import warnings
+warnings.filterwarnings('ignore')
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+"""
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+
+[[loading_data]]
+code = """
+
+# Loading Data
+col_names = ["date", "value"]
+df = pd.read_csv("/kaggle/input/time-series-datasets/Electric_Production.csv",
+                 names=col_names, header=0, parse_dates=[0])
+df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
+df = df.set_index(['date'])
+df.head()
+"""
+
+[[loading_data]]
+code = """
+# Define column names
+col_names = ["date", "value"]
+
+# Read CSV file into DataFrame
+df = pd.read_csv("/kaggle/input/time-series-datasets/Electric_Production.csv", names=col_names, header=0, parse_dates=[0])
+
+# Convert 'date' column to datetime format
+df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
+
+# Set 'date' column as the index
+df = df.set_index(['date'])
+
+# Display the first few rows of the DataFrame
+df.head()
+"""
+[[rolling_statistics]]
+code = """
+# Calculate rolling mean and standard deviation
+rolling_mean = df.rolling(window=12).mean()
+rolling_std = df.rolling(window=12).std()
+
+# Plot original data, rolling mean, and rolling standard deviation
+plt.figure(figsize=(10, 6))
+plt.plot(df, color='cornflowerblue', label='Original')
+plt.plot(rolling_mean, color='firebrick', label='Rolling Mean')
+plt.plot(rolling_std, color='limegreen', label='Rolling Std')
+plt.xlabel('Date', size=12)
+plt.ylabel('Electric Production', size=12)
+plt.legend(loc='upper left')
+plt.title('Rolling Statistics', size=14)
+plt.show()
+"""
+
+[[rolling_statistics]]
+explanation = """
+The code under the 'rolling_statistics' section calculates and visualizes rolling mean and standard deviation for the 'Electric Production' time series data.
+
+1. Calculate rolling mean and standard deviation with a window size of 12 using df.rolling(window=12).mean() and df.rolling(window=12).std().
+
+2. Plot the original data, rolling mean, and rolling standard deviation using Matplotlib.
+
+3. The 'Original' line represents the raw 'Electric Production' data.
+
+4. The 'Rolling Mean' line shows the moving average of the data, smoothing out short-term fluctuations.
+
+5. The 'Rolling Std' line indicates the variability or dispersion of the data within a rolling window.
+
+6. The plot assists in visualizing patterns, trends, and changes over time, providing insights for forecasting methods.
+
+7. The legend and labels enhance the clarity of the plot.
+
+8. The resulting visualization helps identify trends and patterns in the 'Electric Production' data, aiding in subsequent analysis.
+"""
+
+[[checking_stationarity]]
+section = "Checking Stationarity"
+code = """
+# Checking Stationarity
+plt.figure(figsize=(10, 6))
+plt.plot(df['value'], color='cornflowerblue')
+plt.xlabel('Date', size=12)
+plt.ylabel('Electric Production', size=12)
+plt.show()
+"""
+
+[[checking_stationarity]]
+explanation = """
+The code under the 'checking_stationarity' section generates a line plot to visually check the stationarity of the 'Electric Production' time series data.
+
+1. Create a Matplotlib figure with a size of 10x6 inches.
+
+2. Plot the 'Electric Production' data using plt.plot(df['value'], color='cornflowerblue').
+
+3. Set the x-axis label to 'Date' and the y-axis label to 'Electric Production' with specified font sizes.
+
+4. Display the plot using plt.show().
+
+5. The resulting plot visualizes the 'Electric Production' data over time, allowing for a qualitative assessment of stationarity.
+
+6. Stationarity is a crucial assumption for time series analysis, and this plot serves as a preliminary check to identify trends or seasonality in the data.
+"""
+[[code]]
+section = "Observing Upward Trend"
+code = """
+# Observing Upward Trend
+plt.figure(figsize=(10, 6))
+plt.hist(df['value'], color='cornflowerblue')
+plt.xlabel('Electric Production', size=12)
+plt.ylabel('Frequency', size=12)
+plt.show()
+"""
+[[code]]
+explanation = """
+Libraries and Utilities
+import pandas as pd
+from pandas.plotting import autocorrelation_plot
+from pandas import DataFrame, concat
+import numpy as np
+from math import sqrt
+
+from sklearn.metrics import mean_squared_error
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller, acf, pacf
+from statsmodels.tsa.arima_model import ARIMA
+from scipy.stats import boxcox
+
+import seaborn as sns
+sns.set_style("whitegrid")
+import matplotlib.pyplot as plt
+from matplotlib.pylab import rcParams
+from matplotlib import colors
+%matplotlib inline
+
+import warnings
+warnings.filterwarnings('ignore')
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+"""
+
+[[code]]
+explanation = """
+Loading Data
+col_names = ["date", "value"]
+df = pd.read_csv("/kaggle/input/time-series-datasets/Electric_Production.csv",
+                 names=col_names, header=0, parse_dates=[0])
+df['date'] = pd.to_datetime(df['date'], infer_datetime_format=True)
+df = df.set_index(['date'])
+df.head()
+"""
+
+[[code]]
+explanation = """
+Rolling Statistics
+The first step in any data analysis task is to visualize the data. Graphs enable the visualization of features such as patterns, unusual observations, changes over time, and relationships between variables. These features seen in plots must be incorporated into forecasting methods. The code below calculates rolling mean and standard deviation and plots the original data along with these rolling statistics.
+rolling_mean = df.rolling(window=12).mean()
+rolling_std = df.rolling(window=12).std()
+plt.figure(figsize=(10, 6))
+plt.plot(df, color='cornflowerblue', label='Original')
+plt.plot(rolling_mean, color='firebrick', label='Rolling Mean')
+plt.plot(rolling_std, color='limegreen', label='Rolling Std')
+plt.xlabel('Date', size=12)
+plt.ylabel('Electric Production', size=12)
+plt.legend(loc='upper left')
+plt.title('Rolling Statistics', size=14)
+plt.show()
+"""
+
+[[code]]
+explanation = """
+Checking Stationarity
+This code plots the 'Electric Production' data to visually check for stationarity. The purpose is to observe patterns or trends in the data.
+plt.figure(figsize=(10, 6))
+plt.plot(df['value'], color='cornflowerblue')
+plt.xlabel('Date', size=12)
+plt.ylabel('Electric Production', size=12)
+plt.show()
+"""
+
+[[code]]
+explanation = """
+Histogram and Data Split
+This code creates a histogram of the 'Electric Production' data, providing insights into its distribution. Additionally, it prints the shape of the data and splits it into two subsets named 'value_1' and 'value_2'.
+print("Data Shape: {}".format(df.shape))
+value_1 = df[0:199]
+value_2 = df[200:397]
+"""
+
+
+
+[[code]]
+explanation = """
+Mean of Data
+This code calculates and prints the mean of the 'value' column for two subsets, 'value_1' and 'value_2', created from the original data.
+print("Mean of value_1: {}".format(round(value_1.mean()[0], 3)))
+print("Mean of value_2: {}".format(round(value_2.mean()[0], 3)))
+"""
+
+[[code]]
+explanation = """
+Variance of Data
+This code calculates and prints the variance of the 'value' column for two subsets, 'value_1' and 'value_2', created from the original data.
+print("Variance of value_1: {}".format(round(value_1.var()[0], 3)))
+print("Variance of value_2: {}".format(round(value_2.var()[0], 3)))
+"""
+[[code]]
+explanation = """
+Augmented Dickey-Fuller Test
+The Augmented Dickey-Fuller Test is used to assess whether a given time series is stationary or non-stationary. It involves defining null and alternate hypotheses:
+
+Null Hypothesis: Time Series is non-stationary, indicating a time-dependent trend.
+Alternate Hypothesis: Time Series is stationary, meaning it doesn't depend on time.
+
+The test involves comparing the ADF or t Statistic with critical values:
+- ADF or t Statistic < critical values: Reject the null hypothesis, indicating the time series is stationary.
+- ADF or t Statistic > critical values: Fail to reject the null hypothesis, indicating the time series is non-stationary.
+
+The provided Python code implements the test and displays relevant statistics, including the ADF Statistic, p-value, and Critical Values. The final decision is based on comparing the ADF Statistic with the critical values.
+"""
+
+
+[[code]]
+explanation = """
+Interpretation of Augmented Dickey-Fuller Test Results
+The obtained p-value is greater than the significance level of 0.05, and the ADF statistic is higher than any of the critical values.
+
+Interpretation:
+- p-value > 0.05: Fail to reject the null hypothesis.
+- ADF Statistic > Critical Values: Fail to reject the null hypothesis.
+
+Conclusion:
+There is no reason to reject the null hypothesis. Therefore, the time series is confirmed to be non-stationary.
+"""
+[[code]]
+explanation = """
+Converting Data to Stationary - Logarithmic Transformation with Box-Cox
+
+The Box-Cox transform is applied to the 'value' column of the DataFrame using the boxcox function with lambda (lmbda) set to 0.0, which corresponds to a log transformation.
+
+Steps:
+1. df_log_scaled = df  # Copy the original DataFrame.
+2. df_log_scaled['value'] = boxcox(df_log_scaled['value'], lmbda=0.0)  # Apply Box-Cox log transformation to the 'value' column.
+
+The resulting DataFrame is then visualized to show the effect of the logarithmic transformation on the data.
+
+Note: The Box-Cox transformation helps stabilize the variance and make the time series data more stationary.
+"""
+https://www.kaggle.com/code/sercanyesiloz/electricity-production-forecasting-arima
+
+
+
 
