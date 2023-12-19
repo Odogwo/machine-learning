@@ -1,1 +1,7 @@
+timeseries
+
+content ="""
+https://www.kaggle.com/code/sercanyesiloz/electricity-production-forecasting-arima
+https://www.kaggle.com/code/nageshsingh/predict-electricity-consumption/noteb
+"""
 
