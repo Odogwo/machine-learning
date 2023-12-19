@@ -1,7 +1,12 @@
 [[time_series_analysis]]
   definition = """Time series forecasting is a technique for predicting events through a
   sequence of time, used in various fields such as geology, behavior, and economics. 
-  It analyzes past trends to predict future events."""
+  It analyzes past trends to predict future events.
+  
+    Time series analysis involves the examination of various components that collectively 
+    contribute to the overall pattern of a sequence of data points over time.
+  
+  """
 
   [time_series_analysis.applications]
     weather_forecasting = true
@@ -57,3 +62,31 @@
     number = 5
     name = "Predictions"
     description = "Make predictions for future events using the fitted model."
+
+
+
+ [[ timeeries components]]
+
+Trend = """
+   Trend represents the long-term movement or direction in a time series. 
+   It indicates whether the data is generally increasing, decreasing, or remaining stable over an extended period.
+   """
+
+Seasonality = """
+   Seasonality refers to the recurring patterns or fluctuations in a 
+   time series that follow a regular and predictable cycle. 
+   These cycles often correspond to specific time periods, such as daily, monthly, or yearly patterns.
+
+"""
+
+
+Cyclical Variations+ 
+   Cyclical variations are patterns that repeat at irregular intervals, typically over a more extended time frame than seasonality. Unlike seasonality, the duration of cyclical variations is not fixed, and they may not follow a regular pattern.
+
+4. **Irregular Variations (Residuals):**
+   Irregular variations, also known as residuals or noise, represent the unpredictable and random components of a time series. These variations do not follow a specific pattern and are typically caused by unpredictable events or external factors.
+
+5. **Stationarity:**
+   Stationarity is a crucial concept in time series analysis. A time series is considered stationary when its statistical properties, such as mean and variance, remain constant over time. Stationarity simplifies the modeling process and aids in making more reliable predictions.
+
+Understanding and identifying these components are essential for building accurate time series models, such as ARIMA (AutoRegressive Integrated Moving Average), which can capture and analyze these patterns to make informed forecasts.
